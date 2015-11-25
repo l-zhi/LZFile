@@ -4,21 +4,19 @@ Images File Upload widget with multiple file selection, drag&amp;drop support, p
 图片上传组件基于zepto，只支持HTML5， 适用于 IOS 和 android webapp 开发，或是支持html5 的 chrome，safari。支持图片上传预览，以及拖拽，进度条等超轻量级组件
 
 
-#### First you must include Zepto and LZFile in your code:
-#### 需要引用zepto库和LZFile
-
+First you must include Zepto and LZFile in your code:
+需要引用zepto库和LZFile
 ```html
 <script src="./js/zepto.js"></script>
 <script src="./js/LZFile.js"></script>
 ```
 
-#### HTML code：
-
+HTML code：
 ```html
 <div class="J_upload mod-upload-pic"></div>
 ```
 
-#### javascript code：
+javascript code：
 ```html
 var lzfile = $(".J_upload").LZFile({
         "url":"", // action url
@@ -32,8 +30,10 @@ var lzfile = $(".J_upload").LZFile({
 lzfile.upload(); // 上传图片
 ```
 
+#### Example
+[LZFile Demo](http://l-zhi.com/demo/github/LZFile/example.html).
 
-# API:
+## API:
 
 ```
 LZFile.fn._defaultOptions = {
@@ -89,6 +89,6 @@ index: 删除选择的第几个file
 ####upload
 上传图片到服务器
 
-# License
+## License
 
 All code licensed under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
