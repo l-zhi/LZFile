@@ -1,24 +1,24 @@
 # LZFile
-###Images File Upload widget with multiple file selection, drag&amp;drop support, progress bar, validation filter and preview images for zepto, usually used in webapp with ios and android. that only supports standard HTML5.
+### Images File Upload widget with multiple file selection, drag&amp;drop support, progress bar, validation filter and preview images for zepto, usually used in webapp with ios and android. that only supports standard HTML5.
 
 ###图片上传组件基于zepto，只支持HTML5， 适用于 IOS 和 android webapp 开发，或是支持html5 的 chrome，safari。支持图片上传预览，以及拖拽，进度条等超轻量级组件
 
 
-#First you must include Zepto and LZFile in your code:
-#需要引用zepto库和LZFile
+# First you must include Zepto and LZFile in your code:
+# 需要引用zepto库和LZFile
 
 ```html
 <script src="./js/zepto.js"></script>
 <script src="./js/LZFile.js"></script>
 ```
 
-####HTML code：
+#### HTML code：
 
 ```html
 <div class="J_upload mod-upload-pic"></div>
 ```
 
-####javascript code：
+#### javascript code：
 ```html
 var lzfile = $(".J_upload").LZFile({
         "url":"", // action url
@@ -32,7 +32,8 @@ var lzfile = $(".J_upload").LZFile({
 lzfile.upload(); // 上传图片
 ```
 
-#API:
+
+# API:
 
 ```
 LZFile.fn._defaultOptions = {
@@ -49,36 +50,36 @@ LZFile.fn._defaultOptions = {
 };
 ```
 
-##传入参数
+### 参数
 
-####dragDrop
+#### dragDrop
 是否可以拖拽 手机端web可以关闭
 
-####url
+#### url
 后台处理接口
 
-####onSelected
+#### onSelected
 选择文件后调用 参数 files 选择成功的文件列表
 
-####onDragOver
+#### onDragOver
 拖动时调用
 
-####onDragLeave
+#### onDragLeave
 拖动离开时调用
 
-####onProgress
+#### onProgress
 进度 传入参数包含百分比
 
-####onSuccess
+#### onSuccess
 上传服务器成功
 
-####onFailure
+#### onFailure
 上传服务器失败
 
-####onComplete
+#### onComplete
 上传服务器完成
 
-####filter
+#### filter
 传入 files 选择的文件， 方法必须返回过滤后的文件列表
 
 ###包含的方法
@@ -86,7 +87,7 @@ LZFile.fn._defaultOptions = {
 index: 删除选择的第几个file
 
 ####upload
-上传所有选择的文件
+上传图片到服务器
 
 # License
 
