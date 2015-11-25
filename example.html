@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>LZFile</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+		/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<meta http-equiv="x-dns-prefetch-control" content="on" />
+	<script src="./js/zepto.js"></script>
+	<script src="./js/LZFile.js"></script>
+	<style>
+	body{
+		background-color: #000;
+	}
+
+	/*上传组件样式*/
+	.mod-upload-pic{
+		position: relative;
+	}
+	.mod-upload-pic:after{
+		content: "\20";
+		clear: both;
+		display: block;
+	}
+	.mod-upload-pic .item{
+		background-color: #fff;
+		position: relative;
+	    width: 49px;
+	    height: 49px;
+	    float: left;
+	    margin: 0 10px 5px 0;
+	    border:1px solid #e6e6e6;
+	}
+	.mod-upload-pic .item .close{
+		position: absolute;
+		width: 16px;
+		height: 16px;
+		border-radius: 8px;
+		background-color: #e4393c;
+		right: -8px;
+		top: -8px;
+	}
+	.mod-upload-pic .item .close:before,.mod-upload-pic .item .close:after{
+		content: "\20";
+		position: absolute;
+		left: 50%;
+	    top: 50%;
+	    margin: -1px 0 0 -4px;
+		width: 8px;
+		height: 1px;
+		background-color: #fff;
+		-webkit-transform: rotate(45deg);
+	    transform: rotate(45deg);
+	}
+	.mod-upload-pic .item .close:after{
+		-webkit-transform: rotate(135deg);
+	    transform: rotate(135deg);
+	}
+	.mod-upload-pic .item img{
+		position: absolute;
+	    left: 50%;
+	    top: 50%;
+	    -webkit-transform: translate(-50%, -50%);
+	    transform: translate(-50%, -50%);
+	    max-width: 100%;
+	    max-height: 100%;
+	}
+	.mod-upload-pic .item-add:before, .mod-upload-pic .item-add:after {
+	    width: 36px;
+	    height: 2px;
+	    content: "\20";
+	    background-color: #ccc;
+	    position: absolute;
+	    left: 50%;
+	    top: 50%;
+	    margin: -1px 0 0 -18px;
+	}
+	.mod-upload-pic .item-add.hover{
+		border-color: red;
+	}
+	.mod-upload-pic input[type=file] {
+	    position: absolute;
+	    top: 0;
+	    right: 0;
+	    left: 0;
+	    bottom: 0;
+	    width: 100%;
+	    margin: 0;
+	    padding: 0;
+	    font-size: 20px;
+	    cursor: pointer;
+	    opacity: 0;
+	}
+	.mod-upload-pic .item-add{
+		border:1px solid #e6e6e6;
+	}
+	.mod-upload-pic .item-add:after {
+	    -webkit-transform: rotate(90deg);
+	    transform: rotate(90deg);
+	}
+
+
+	/*按钮 + 进度条样式*/
+	.button {
+	    display: inline-block;
+	    position: relative;
+	    color: #888;
+	    text-shadow: 0 1px 0 rgba(255,255,255, 0.8);
+	    text-decoration: none;
+	    text-align: center;
+	    padding: 8px 12px;
+	    font-size: 12px;
+	    font-weight: 700;
+	    font-family: helvetica, arial, sans-serif;
+	    border-radius: 4px;
+	    border: 1px solid #bcbcbc;
+	    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+	    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+	    background-image: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(239,239,239,1) 60%,rgba(225,223,226,1) 100%);
+	    background-image: -moz-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(239,239,239,1) 60%,rgba(225,223,226,1) 100%);
+	    background-image: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(239,239,239,1) 60%,rgba(225,223,226,1) 100%);
+	    background-image: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(239,239,239,1) 60%,rgba(225,223,226,1) 100%);
+	    background-image: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(239,239,239,1) 60%,rgba(225,223,226,1) 100%);
+	}
+	.progress{
+		position: relative;
+		display: none;
+		margin-bottom: 10px;
+	    background: #000;
+	    height: 5px;
+	    border-radius: 3px;
+	    border-left: 1px solid #111;
+	    border-top: 1px solid #111;
+	    border-right: 1px solid #333;
+	    border-bottom: 1px solid #333;
+	    width: 300px;
+	}
+	.progress_inner{
+		width: 0%;
+		height: 1px;
+	    margin: 2px 0;
+	    background: #2187e7;
+	    position: absolute;
+	    box-shadow: 0px 0px 10px 1px rgba(0,198,255,0.4);
+	    -webkit-transition: width 0.3s ease-in;
+	    transition: width 0.3s ease-in;
+	}
+	</style>
+<body>
+	<div class="J_upload mod-upload-pic"></div>
+	<div class="progress"><span class="progress_inner"></span></div>
+	<a href="javascript:;" class="button J_submit">上传</a>
+	<script>
+	var lzfile = $(".J_upload").LZFile({
+		"url":"http://localhost:5566/jdvoice/handler/upload",
+		"onSuccess":function(data){
+			console.info(data);
+			console.info("上传成功！");
+		},
+		"onDragOver": function(){
+			$(".item-add").addClass("hover");
+		},
+		"onDragLeave": function(){
+			$(".item-add").removeClass("hover");
+		},
+		"onProgress": function(e, position, total, percent, files){
+			$(".progress .progress_inner").css('width', percent + '%');
+			if (percent == 100){
+				console.info("上传成功！");
+				$(".J_submit").text("上传成功");
+			}
+		}
+	});
+
+	$(".J_submit").on('click', function(){
+		$(".progress").show();
+		lzfile.upload();
+	})
+	</script>
+</body>
+</html>
