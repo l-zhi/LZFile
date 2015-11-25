@@ -1,11 +1,11 @@
 # LZFile
-### Images File Upload widget with multiple file selection, drag&amp;drop support, progress bar, validation filter and preview images for zepto, usually used in webapp with ios and android. that only supports standard HTML5.
+Images File Upload widget with multiple file selection, drag&amp;drop support, progress bar, validation filter and preview images for zepto, usually used in webapp with ios and android. that only supports standard HTML5.
 
-###图片上传组件基于zepto，只支持HTML5， 适用于 IOS 和 android webapp 开发，或是支持html5 的 chrome，safari。支持图片上传预览，以及拖拽，进度条等超轻量级组件
+图片上传组件基于zepto，只支持HTML5， 适用于 IOS 和 android webapp 开发，或是支持html5 的 chrome，safari。支持图片上传预览，以及拖拽，进度条等超轻量级组件
 
 
-# First you must include Zepto and LZFile in your code:
-# 需要引用zepto库和LZFile
+#### First you must include Zepto and LZFile in your code:
+#### 需要引用zepto库和LZFile
 
 ```html
 <script src="./js/zepto.js"></script>
