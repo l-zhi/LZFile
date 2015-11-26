@@ -52,7 +52,8 @@ LZFile.fn._defaultOptions = {
 
 ### settings
 
-#### dragDrop boolean
+#### dragDrop 
+boolean
 Whether to close drag event or open it
 
 #### url
