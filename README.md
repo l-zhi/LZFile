@@ -5,7 +5,6 @@ Images File Upload widget with multiple file selection, drag&amp;drop support, p
 
 
 First you must include Zepto and LZFile in your code:
-需要引用zepto库和LZFile
 ```html
 <script src="./js/zepto.js"></script>
 <script src="./js/LZFile.js"></script>
@@ -27,7 +26,7 @@ var lzfile = $(".J_upload").LZFile({
 ```
 
 ```html
-lzfile.upload(); // 上传图片
+lzfile.upload(); // 上传图片方法
 ```
 
 #### Example
@@ -35,9 +34,10 @@ lzfile.upload(); // 上传图片
 
 ## API:
 
+options
 ```
 LZFile.fn._defaultOptions = {
-    dragDrop: true, // 是否可以拖拽
+    dragDrop: true,
     url: '', //action url
     onSelected: function(){}, //选择文件后调用
     onDragOver: function(){}, //拖动时调用
@@ -52,42 +52,42 @@ LZFile.fn._defaultOptions = {
 
 ### 参数
 
-#### dragDrop
-是否可以拖拽 手机端web可以关闭
+#### dragDrop boolean
+Whether to close drag event or open it
 
 #### url
-后台处理接口
+action url 
 
 #### onSelected
-选择文件后调用 参数 files 选择成功的文件列表
+Fires while files is selected
 
 #### onDragOver
-拖动时调用
+Fires while a file drag over the dom
 
 #### onDragLeave
-拖动离开时调用
+Fires while a file drag leave the dom
 
 #### onProgress
-进度 传入参数包含百分比
+Fires while a file is being uploaded. Use this event to update the current file upload progress
 
 #### onSuccess
-上传服务器成功
+Fires when a file is successfully uploaded
 
 #### onFailure
-上传服务器失败
+Fires when a file is failure uploaded
 
 #### onComplete
-上传服务器完成
+Fires when all files are uploaded or no files uploaded
 
 #### filter
-传入 files 选择的文件， 方法必须返回过滤后的文件列表
+filter files and required return files
 
 ###包含的方法
 ####delFile(index)
-index: 删除选择的第几个file
+index: the index of the file in array
 
 ####upload
-上传图片到服务器
+Uploader instance sending the event
 
 ## License
 
