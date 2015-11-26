@@ -50,7 +50,7 @@ LZFile.fn._defaultOptions = {
 };
 ```
 
-### 参数
+### settings
 
 #### dragDrop boolean
 Whether to close drag event or open it
@@ -82,7 +82,7 @@ Fires when all files are uploaded or no files uploaded
 #### filter
 filter files and required return files
 
-###包含的方法
+###function
 ####delFile(index)
 index: the index of the file in array
 
