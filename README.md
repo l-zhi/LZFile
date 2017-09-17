@@ -31,7 +31,7 @@ lzfile.upload(); // 上传图片方法
 
 #### Example
 [LZFile Demo](http://l-zhi.com/demo/github/LZFile/index.html).
-
+test
 ## API:
 
 options
