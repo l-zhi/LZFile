@@ -1,3 +1,15 @@
+/**
+ * LZFile 1.0.0
+ * Images File Upload widget with multiple file selection, drag&amp;drop support, progress bar, validation filter and preview images for zepto, usually used in webapp with ios and android. that only supports standard HTML5.
+ * 
+ * https://github.com/l-zhi/LZFile#readme
+ * 
+ * Copyright 2017, l-zhi
+ * 
+ * Licensed under ISC
+ * 
+ * Released on: September 17, 2017
+ */
 /*
  * LZFile - jQuery / Zepto plugin
  *
@@ -7,25 +19,25 @@
  *
  */
 ;
-(function($, window, document, undefined) {
+(function ($, window, document, undefined) {
 	/**
 	 * [LZFile 初始化方法]
 	 * @param {[$(#xxx)]} el     [容器]
 	 * @param {[object]} options 初始化参数
 	 */
-	var LZFile = function(el, options) {
+	var LZFile = function (el, options) {
 		this.el = el;
 		this._init(options);
 		return this;
-	};
-
-	var noop = function() {};
+	}
+	var noop = function () { };
 
 	LZFile.fn = LZFile.prototype;
 
 	LZFile.fn._defaultOptions = {
 		dragDrop: true, // 是否可以拖拽
 		url: '', //action url
+		uploadHtml: '<div class="item item-add"><input class="uploadFile" type="file" name="file" multiple="" accept="image/*"></div>',
 		onSelected: noop, //选择文件后调用
 		onDeleted: noop, //删除时调用
 		onDragOver: noop, //拖动时调用
@@ -39,23 +51,23 @@
 	/**
 	 * [_initUi 初始化UI]
 	 */
-	LZFile.fn._initUi = function() {
-		this.fileInput = $('<div class="item item-add"><input class="uploadFile" type="file" name="file" multiple="" accept="image/*"></div>');
+	LZFile.fn._initUi = function () {
+		this.fileInput = $(this.opts.uploadHtml)
 		this.el.append(this.fileInput);
 	}
 
-	LZFile.fn._init = function(options) {
+	LZFile.fn._init = function (options) {
 		var opts = $.extend(this._defaultOptions, options || {});
-		this._initUi();
 		this.opts = opts;
+		this._initUi();
 		this._initevent();
 	};
 	/**
 	 * 初始化事件
 	 */
-	LZFile.fn._initevent = function() {
+	LZFile.fn._initevent = function () {
 		this.el.on("change", ".uploadFile", this.getFile.bind(this));
-		this.el.on("click", ".close", function(e) {
+		this.el.on("click", ".close", function (e) {
 			var $t = $(e.target),
 				$item = '',
 				index = '';
@@ -67,17 +79,14 @@
 			}
 		}.bind(this));
 		if (this.opts.dragDrop) {
-			this.el.on('dragover', function(e) {
+			this.el.on('dragover', function (e) {
 				this.dragHover(e);
 			}.bind(this));
-			this.el.on('dragleave', function(e) {
+			this.el.on('dragleave', function (e) {
 				this.dragHover(e);
 			}.bind(this));
-			this.el.on('drop', function(e) {
+			this.el.on('drop', function (e) {
 				this.opts.onDragLeave(e)
-				this.getFile(e);
-				e.stopPropagation();
-				e.preventDefault();
 			}.bind(this));
 		}
 	};
@@ -86,7 +95,7 @@
 	 * @param  {[event]} e 
 	 * @return this
 	 */
-	LZFile.fn.dragHover = function(e) {
+	LZFile.fn.dragHover = function (e) {
 		console.info(e.type);
 		e.stopPropagation();
 		e.preventDefault();
@@ -97,7 +106,7 @@
 	 * 过滤文件，只允许图片
 	 * @param  {[Array]} files 
 	 */
-	LZFile.fn._filter = function(files) {
+	LZFile.fn._filter = function (files) {
 		if (!this._files)
 			this._files = [];
 		for (var i = 0; i < files.length; i++) {
@@ -112,24 +121,37 @@
 	 * @param  {event} e 
 	 * @return {this}
 	 */
-	LZFile.fn.getFile = function(e) {
-		var files = e.target.files || e.dataTransfer.files;
-		if (this.opts.filter != noop) {
-			this._files = this.opts.filter(files);
-		} else {
-			this._filter(files);
+	LZFile.fn.getFile = function (e) {
+		var files = e.target.files || e.dataTransfer.files
+		if (this.opts.filter !== noop) {
+			var _files = 0
+			if (this._files && this._files.length) {
+				_files = this._files.slice(0)
+			} else {
+				_files = []
+			}
+			files = this.opts.filter(files, _files)
 		}
-		this.level = 0;
-		this.html = '';
-		this._refreshDom(this._files);
-		this.html = '';
-		return this;
+		this._filter(files)
+		this.level = 0
+		this.html = ''
+		this._refreshDom(this._files)
+		this.html = ''
+		return this
 	};
+	/**
+	 * 获取当前文件
+	 * @param  {event} e
+	 * @return {this}
+	 */
+	LZFile.fn.currentFiles = function () {
+		return this._files
+	}
 	/**
 	 * 更新dom
 	 * @param  {array} files 根据现有文件更新dom
 	 */
-	LZFile.fn._refreshDom = function(files) {
+	LZFile.fn._refreshDom = function (files) {
 		if (this._files.length == this.level) {
 			this.el.html(this.html);
 			this.el.append(this.fileInput);
@@ -139,7 +161,7 @@
 		} else {
 			if (files[this.level]) {
 				var reader = new FileReader();
-				reader.onloadend = function() {
+				reader.onloadend = function () {
 					this.html += '<div class="item" data-index="' + this.level + '"><img src="' + reader.result + '" /><em class="close"></em></div>'
 					this.level++;
 					this._refreshDom(files);
@@ -156,7 +178,7 @@
 	 * @param  {number} index 删除文件index
 	 * @return {this}
 	 */
-	LZFile.fn.delFile = function(index) {
+	LZFile.fn.delFile = function (index) {
 		this._files.splice(+index, 1);
 		return this;
 	};
@@ -164,7 +186,7 @@
 	 * 清空文件
 	 * @return {this}
 	 */
-	LZFile.fn.emptyFile = function() {
+	LZFile.fn.emptyFile = function () {
 		this._files = [];
 		return this;
 	};
@@ -172,7 +194,7 @@
 	/**
 	 * 上传文件
 	 */
-	LZFile.fn.upload = function() {
+	LZFile.fn.upload = function () {
 		if (!this._files || !this._files.length)
 			return
 		var self = this;
@@ -180,10 +202,10 @@
 		//if (this.opts.onProgress != noop && typeof this.opts.onProgress == 'function') {
 		// fix the progress target file
 		var files = this._files;
-		optionXhr = function() {
+		optionXhr = function () {
 			var xhr = $.ajaxSettings.xhr();
 			if (xhr.upload) {
-				xhr.upload.addEventListener('progress', function(e) {
+				xhr.upload.addEventListener('progress', function (e) {
 					var percent = 0;
 					var position = e.loaded || e.position; /*e.position is deprecated*/
 					var total = e.total;
@@ -212,12 +234,19 @@
 			error: this.opts.onFailure,
 			complete: this.opts.onComplete
 		});
-		return this;
+		return this
 	};
 
-	$.fn.LZFile = function(option) {
+	$.fn.LZFile = function (option) {
 		return new LZFile($(this), option);
 	};
-	$.fn.LZFile.version = '0.2.0';
+	$.fn.LZFile.version = '0.2.0'
 
+	if (typeof module !== 'undefined' && typeof exports === 'object') {
+		module.exports = LZFile
+	} else if (typeof define === 'function' && (define.amd || define.cmd)) {
+		define(function () { return LZFile; })
+	} else {
+		window.LZFile = LZFile;
+	}
 })(window.jQuery || window.Zepto, window, document);

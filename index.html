@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>LZFile</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+		/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<meta http-equiv="x-dns-prefetch-control" content="on" />
+	<link rel="stylesheet" href="dist/css/lzfile.css">
+	<script src="dist/js/zepto.js"></script>
+	<script src="dist/js/lzfile.zepto.js"></script>
+	<script src="dist/js/exif.js"></script>
+<body>
+	<div class="J_upload mod-upload-pic"></div>
+	<div class="progress"><span class="progress_inner"></span></div>
+	<a href="javascript:;" class="button J_submit">Upload</a>
+	<a href="javascript:;" class="button J_showInfo">Images Info</a>
+	<div id="J_imagesInfo" class="upload_info"></div>
+	<script>
+	var getExif = function (file, cb) {
+		var reader = new FileReader()
+		reader.onloadend = function () {
+			var exif = EXIF.readFromBinaryFile(reader.result)
+			cb && cb(exif, file)
+		}
+		reader.readAsArrayBuffer(file)
+	}
+	var lzfile = $(".J_upload").LZFile({
+		"url":"http://localhost:5566/jdvoice/handler/upload",
+		"onSuccess":function(data){
+			console.info(data);
+			console.info("上传成功！");
+		},
+		"onDragOver": function(){
+			$(".item-add").addClass("hover");
+		},
+		"onDragLeave": function(){
+			$(".item-add").removeClass("hover");
+		},
+		"onProgress": function(e, position, total, percent, files){
+			$(".progress .progress_inner").css('width', percent + '%');
+			if (percent == 100){
+				console.info("上传成功！");
+				$(".J_submit").text("上传成功");
+			}
+		}
+	});
+
+	$(".J_submit").on('click', function(){
+		if(lzfile._files && lzfile._files.length) {
+			$(".progress").show()
+			lzfile.upload();
+		} else {
+			$('#J_imagesInfo').html('press "+" upload images first')
+		}
+	})
+	$('.J_showInfo').on('click', function() {
+		var files = lzfile._files
+		if(!files || !files.length) {
+			$('#J_imagesInfo').html('press "+" upload images first')
+			return
+		}
+		var file = 0
+		$('#J_imagesInfo').html('')
+		for (var i = 0; i < files.length; i++) {
+			file = files[i]
+			getExif(file, function (exif, f) {
+				$('#J_imagesInfo').append(JSON.stringify({
+					name: f.name, 
+					size: f.size, 
+					type: f.type,
+					PixelXDimension: exif.PixelXDimension,
+					PixelYDimension: exif.PixelYDimension,
+					Software: exif.Software,
+					Make: exif.Make,
+					Model: exif.Model,
+					ImageDescription: exif.ImageDescription
+				}) + '<br />')
+				console.info('exif', exif)
+			})
+		}
+	})
+	</script>
+</body>
+</html>
