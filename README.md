@@ -29,8 +29,13 @@ var lzfile = $(".J_upload").LZFile({
 lzfile.upload(); // 上传图片方法
 ```
 
+image information
+```json
+{"name":"test.jpeg","size":190265,"type":"image/jpeg","PixelXDimension":750,"PixelYDimension":1334,"Software":"Instagram"}
+```
+
 #### Example
-[LZFile Demo](http://l-zhi.com/demo/github/LZFile/index.html).
+![Demo](https://raw.githubusercontent.com/l-zhi/LZFile/gh-pages/code.png)
 
 ## API:
 
